@@ -66,9 +66,9 @@ This is an "Off-line machine learning" (Offline AI, artificial intelligence) pro
 
 * Copy label_image and camera from /tensorflow/tensorflow/contrib/lite/tools/make/gen/rpi_armv7l/bin/ of host’s container into the folder.
 
-* Copy [grace_hopper.bmp](data/grace_hopper.bmp)from /tensorflow/tensorflow/contrib/lite/examples/label_image of host’s container into the folder.
+* Copy [grace_hopper.bmp](data/grace_hopper.bmp) from /tensorflow/tensorflow/contrib/lite/examples/label_image of host’s container into the folder.
 
-* Copy [labels.txt](data/labels.txt)from /tensorflow/tensorflow/tensorflow/contrib/lite/java/ovic/src/testdata of host’s container into the folder.
+* Copy [labels.txt](data/labels.txt) from /tensorflow/tensorflow/tensorflow/contrib/lite/java/ovic/src/testdata of host’s container into the folder.
 
 * Download [Mobilenet_v2_1.0_224_quant.tflite](data/Mobilenet_v2_1.0_224_quant.tflite) from https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/g3doc/models.md into the folder.
 
