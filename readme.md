@@ -8,9 +8,7 @@ This is an "Off-line machine learning" project, which develops 2 tensorflow-lite
 * Install Raspbian (https://www.raspberrypi.org/learning/software-guide/quickstart/)
 
 * On Raspberry Pi 3 board, install the tool-chain:
-```
-#sudo apt install build-essential
-```
+```#sudo apt install build-essential```
 * Setup nfs client at the board, to connect host.
 
 * Connect camera to the board.
