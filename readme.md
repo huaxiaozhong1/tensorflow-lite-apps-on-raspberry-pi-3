@@ -19,49 +19,49 @@ This is an "Off-line machine learning" project, which develops 2 tensorflow-lite
 ### Setup cross-building tool-chain in docker container of host (on my case - Ubuntu 18.04), put my new files into.
 
 * Setup docker image:
->>```$sudo docker pull tensorflow/tensorflow:1.12.0-devel ```
-    * Note: the image is the latest one whose TF version is 1.12.0. I notice that TfLite has been moved out from /contrib with TF version 1.13+, as announced. But, the version hasn’t been announced as “stable”, and my building for libtensorflow-lite.a (/tensorflow/tensorflow/lite/tools/make/build_rpi_lib.sh) is blocked. So I am reporting my progress based on TF 1.12.0. As soon as the building of TfLite lib gets stable, all these procedures will be updated to be based on 1.13+.
+>>```$sudo docker pull tensorflow/tensorflow:1.12.0-devel ```  
+    ** Note: *the image is the latest one whose TF version is 1.12.0. I notice that TfLite has been moved out from /contrib with TF version 1.13+, as announced. But, the version hasn’t been announced as “stable”, and my building for libtensorflow-lite.a (/tensorflow/tensorflow/lite/tools/make/build_rpi_lib.sh) is blocked. So I am reporting my progress based on TF 1.12.0. As soon as the building of TfLite lib gets stable, all these procedures will be updated to be based on 1.13+.
 
-* Run the docker image:
+* Run the docker image:  
 >>```$sudo docker run -it tensorflow/tensorflow:1.12.0-devel ```
 
-* Exit the image running, give a name, demo-1.12, to container based on the image.
->>Run the docker container:
->>```$sudo docker container start demo-1.12.0 ```
+* Exit the image running, give a name, demo-1.12, to container based on the image.  
+>>Run the docker container:  
+>>```$sudo docker container start demo-1.12.0 ```  
 >>```$sudo docker container attach demo-1.12.0 ```
 
 * Setup building environment in the container (https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/g3doc/rpi.md):
->>```#cd /tensorflow ```
->>```#apt update ```
->>```#apt upgrade ```
->>```#apt install crossbuild-essential-armhf ```
->>```#./tensorflow/contrib/lite/tools/make/download_dependencies.sh ```
->>```#apt update ```
+>>```#cd /tensorflow ```  
+>>```#apt update ```  
+>>```#apt upgrade ```  
+>>```#apt install crossbuild-essential-armhf ```  
+>>```#./tensorflow/contrib/lite/tools/make/download_dependencies.sh ```  
+>>```#apt update ```  
 >>```#apt upgrade ```
 
-* Make a little modification in the building tree:
->>Replace /tensorflow/tensorflow/contrib/lite/tools/make with new Makefile (sudo docker cp).
+* Make a little modification in the building tree:  
+>>Replace /tensorflow/tensorflow/contrib/lite/tools/make with new Makefile (sudo docker cp).  
 >>Copy new folder of “camera” to /tensorflow/tensorflow/contrib/lite/examples.
 
 ### Prepare more static libs to build demo apps:
 
-* In the container at host:
->>```#apt install -y libjpeg-dev ```
->>```#apt install libv4l-dev ```
+* In the container at host:  
+>>```#apt install -y libjpeg-dev ```  
+>>```#apt install libv4l-dev ```  
 
 * At Pi 3 board:
->>```$sudo apt install -y libjpeg-dev ```
+>>```$sudo apt install -y libjpeg-dev ```  
 >>```$sudo apt install libv4l-dev ```
 
-* Create folder /usr/lib/arm-linux-gnueabihf in host’s container, copy the following libs from /usr/lib/arm-linux-gnueabihf/ of Pi 3 board to the corresponding folder of the container:
+* Create folder /usr/lib/arm-linux-gnueabihf in host’s container, copy the following libs from /usr/lib/arm-linux-gnueabihf/ of Pi 3 board to the corresponding folder of the container:  
 >>libjpeg.a  librt.a  libv4l1.a  libv4l2.a  libv4l2rds.a  libv4lconvert.a
 
-* In the container of host, generate libtensorflow-lite.a and executable of demo apps:
+* In the container of host, generate libtensorflow-lite.a and executable of demo apps:  
 >>```/tensorflow/tensorflow/lite/tools/make/build_rpi_lib.sh ```
 
 ### Run demo apps at Pi 3 board:
 
-* At board:
+* At board:  
 >>```#mkdir demos ```
 
 * Copy label_image and camera from /tensorflow/tensorflow/contrib/lite/tools/make/gen/rpi_armv7l/bin/ of host’s container into the folder.
