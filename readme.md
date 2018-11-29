@@ -1,5 +1,5 @@
 # Two tensorflow-lite applications running on Raspberry Pi 3
-This is an "Off-line machine learning" (Offline AI, artificial intelligence) project, in which 2 tensorflow-lite applications are developed to run on Raspberry Pi 3 board. The applications are built in docker container in Ubuntu 18.04 host, then runs with Raspbian 9 (stretch) on Pi. The Readme describes all steps on how these application are created based on tensorflow tree (version 1.12.0) and etc. The project provides all necessary stuffs to go through these steps, or points out where the other stuffs are. So, hopefully the project could be a good and compact tutorial that developer could fast follow to get your own TfLite-Raspberry Pi applications started confidently.
+This is an "Off-line machine learning" (Offline AI, artificial intelligence) project, in which 2 tensorflow-lite applications are developed to run on Raspberry Pi 3 board. The applications are built in docker container in Ubuntu 18.04 host, then runs with Raspbian 9 (stretch) on Pi. The Readme describes all steps on how these application are created based on tensorflow tree (version 1.12.0) and etc. The project provides all necessary stuffs to go through these steps, or points out where the other stuffs are. So, hopefully the project could be a good and compact guide that developer could fast follow to get your own TfLite-Raspberry Pi applications started confidently on the areas like Embedded intelligence (AI embedded system), smart object (AI IoT) and etc. 
 
 ## Setup & Run
 
@@ -20,7 +20,7 @@ This is an "Off-line machine learning" (Offline AI, artificial intelligence) pro
 
 * Setup docker image:
 >>```$sudo docker pull tensorflow/tensorflow:1.12.0-devel ```  
-#### Note: the image is the latest one whose TF version is 1.12.0. I notice that TfLite has been moved out from /contrib with TF version 1.13+, as announced. But, the version hasn’t been announced as “stable”, and my building for libtensorflow-lite.a (/tensorflow/tensorflow/lite/tools/make/build_rpi_lib.sh) is blocked. So I am reporting my progress based on TF 1.12.0. As soon as the building of TfLite lib gets stable, all these procedures will be updated to be based on 1.13+.
+##### Note: the image is the latest one whose TF version is 1.12.0. I notice that TfLite has been moved out from /contrib with TF version 1.13+, as announced. But, the version hasn’t been announced as “stable”, and my building for libtensorflow-lite.a (/tensorflow/tensorflow/lite/tools/make/build_rpi_lib.sh) is blocked. So I am reporting my progress based on TF 1.12.0. As soon as the building of TfLite lib gets stable, all these procedures will be updated to be based on 1.13+.
 
 * Run the docker image:  
 >>```$sudo docker run -it tensorflow/tensorflow:1.12.0-devel ```
@@ -52,7 +52,7 @@ This is an "Off-line machine learning" (Offline AI, artificial intelligence) pro
 * At Pi 3 board:
 >>```$sudo apt install -y libjpeg-dev ```  
 >>```$sudo apt install libv4l-dev ```
-
+https://www.tensorflow.org/community/contributing
 * Create folder /usr/lib/arm-linux-gnueabihf in host’s container, copy the following libs from /usr/lib/arm-linux-gnueabihf/ of Pi 3 board [or from here](./arm-linux-gnueabihf) to the corresponding folder of the container:  
 >>libjpeg.a  librt.a  libv4l1.a  libv4l2.a  libv4l2rds.a  libv4lconvert.a
 
