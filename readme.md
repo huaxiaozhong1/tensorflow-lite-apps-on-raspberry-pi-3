@@ -52,7 +52,7 @@ This is an "Off-line machine learning" (Offline AI, artificial intelligence) pro
 * At Pi 3 board:
 >>```$sudo apt install -y libjpeg-dev ```  
 >>```$sudo apt install libv4l-dev ```
-https://www.tensorflow.org/community/contributing
+
 * Create folder /usr/lib/arm-linux-gnueabihf in host’s container, copy the following libs from /usr/lib/arm-linux-gnueabihf/ of Pi 3 board [or from here](./arm-linux-gnueabihf) to the corresponding folder of the container:  
 >>libjpeg.a  librt.a  libv4l1.a  libv4l2.a  libv4l2rds.a  libv4lconvert.a
 
