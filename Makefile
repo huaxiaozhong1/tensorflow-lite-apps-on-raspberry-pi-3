@@ -30,6 +30,7 @@ INCLUDES := \
 -I$(MAKEFILE_DIR)/../../../../../../ \
 -I$(MAKEFILE_DIR)/downloads/ \
 -I$(MAKEFILE_DIR)/downloads/eigen \
+-I$(MAKEFILE_DIR)/downloads/absl \
 -I$(MAKEFILE_DIR)/downloads/gemmlowp \
 -I$(MAKEFILE_DIR)/downloads/neon_2_sse \
 -I$(MAKEFILE_DIR)/downloads/farmhash/src \
@@ -43,18 +44,9 @@ INCLUDES += -I/usr/local/include
 # overridden by the platform-specific settings in target makefiles.
 LIBS := \
 -lstdc++ \
--lv4l2 \
 -lpthread \
 -lm \
--ljpeg \
 -lz
-
-CAMERA_LIBS := \
-/usr/lib/arm-linux-gnueabihf/libv4l2.a \
-/usr/lib/arm-linux-gnueabihf/libv4lconvert.a \
-/usr/lib/arm-linux-gnueabihf/libv4l2rds.a \
-/usr/lib/arm-linux-gnueabihf/libjpeg.a \
-/usr/lib/arm-linux-gnueabihf/librt.a
 
 # There are no rules for compiling objects for the host system (since we don't
 # generate things like the protobuf compiler that require that), so all of
@@ -83,11 +75,6 @@ tensorflow/contrib/lite/examples/minimal/minimal.cc
 LABEL_IMAGE_SRCS := \
 tensorflow/contrib/lite/examples/label_image/label_image.cc \
 tensorflow/contrib/lite/examples/label_image/bitmap_helpers.cc
-#tensorflow/contrib/lite/examples/label_image/label_image_test.cc
-
-CAMERA_SRCS := \
-tensorflow/contrib/lite/examples/camera/camera.cc \
-tensorflow/contrib/lite/examples/camera/bitmap_helpers.cc
 
 # What sources we want to compile, must be kept in sync with the main Bazel
 # build files.
@@ -125,10 +112,7 @@ $(wildcard tensorflow/contrib/lite/*/*test.cc) \
 $(wildcard tensorflow/contrib/lite/*/*/*test.cc) \
 $(wildcard tensorflow/contrib/lite/*/*/*/*test.cc) \
 $(wildcard tensorflow/contrib/lite/kernels/test_util.cc) \
-$(MINIMAL_SRCS) \
-$(LABEL_IMAGE_SRCS) \
-$(CAMERA_SRCS)
-
+$(MINIMAL_SRCS)
 ifeq ($(BUILD_TYPE),micro)
 CORE_CC_EXCLUDE_SRCS += \
 tensorflow/contrib/lite/mmap_allocation.cc \
@@ -155,8 +139,8 @@ include $(wildcard $(MAKEFILE_DIR)/targets/*_makefile.inc)
 
 ALL_SRCS := \
 	$(MINIMAL_SRCS) \
+	$(PROFILER_SRCS) \
 	$(LABEL_IMAGE_SRCS) \
-	$(CAMERA_SRCS) \
 	$(PROFILER_SUMMARY_SRCS) \
 	$(TF_LITE_CC_SRCS) \
 	$(BENCHMARK_SRCS)
@@ -172,7 +156,6 @@ BENCHMARK_LIB := $(LIBDIR)$(BENCHMARK_LIB_NAME)
 BENCHMARK_BINARY := $(BINDIR)$(BENCHMARK_BINARY_NAME)
 MINIMAL_BINARY := $(BINDIR)minimal
 LABEL_IMAGE_BINARY := $(BINDIR)label_image
-CAMERA_BINARY := $(BINDIR)camera
 
 CXX := $(CC_PREFIX)${TARGET_TOOLCHAIN_PREFIX}g++
 CC := $(CC_PREFIX)${TARGET_TOOLCHAIN_PREFIX}gcc
@@ -183,9 +166,6 @@ $(patsubst %.cc,%.o,$(patsubst %.c,%.o,$(MINIMAL_SRCS))))
 
 LABEL_IMAGE_OBJS := $(addprefix $(OBJDIR), \
 $(patsubst %.cc,%.o,$(patsubst %.c,%.o,$(LABEL_IMAGE_SRCS))))
-
-CAMERA_OBJS := $(addprefix $(OBJDIR), \
-$(patsubst %.cc,%.o,$(patsubst %.c,%.o,$(CAMERA_SRCS))))
 
 LIB_OBJS := $(addprefix $(OBJDIR), \
 $(patsubst %.cc,%.o,$(patsubst %.c,%.o,$(TF_LITE_CC_SRCS))))
@@ -203,7 +183,7 @@ $(OBJDIR)%.o: %.c
 	$(CC) $(CCFLAGS) $(INCLUDES) -c $< -o $@
 
 # The target that's compiled if there's no command-line arguments.
-all: $(LIB_PATH)  $(MINIMAL_BINARY) $(LABEL_IMAGE_BINARY) $(CAMERA_BINARY) $(BENCHMARK_BINARY)
+all: $(LIB_PATH)  $(MINIMAL_BINARY) $(BENCHMARK_BINARY) $(LABEL_IMAGE_BINARY) 
 
 # The target that's compiled for micro-controllers
 micro: $(LIB_PATH)
@@ -228,12 +208,6 @@ $(LABEL_IMAGE_BINARY): $(LABEL_IMAGE_OBJS) $(LIB_PATH)
 	$(CXX) $(CXXFLAGS) $(INCLUDES) \
 	-o $(LABEL_IMAGE_BINARY) $(LABEL_IMAGE_OBJS) \
 	$(LIBFLAGS) $(LIB_PATH) $(LDFLAGS) $(LIBS)
-
-$(CAMERA_BINARY): $(CAMERA_OBJS) $(LIB_PATH)
-	@mkdir -p $(dir $@)
-	$(CXX) $(CXXFLAGS) $(INCLUDES) \
-	-o $(CAMERA_BINARY) $(CAMERA_OBJS) \
-	$(LIBFLAGS) $(LIB_PATH) $(LDFLAGS) $(LIBS) $(CAMERA_LIBS)
 
 $(BENCHMARK_LIB) : $(LIB_PATH) $(BENCHMARK_OBJS)
 	@mkdir -p $(dir $@)
