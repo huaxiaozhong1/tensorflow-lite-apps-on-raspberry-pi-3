@@ -57,7 +57,7 @@ This is an "Off-line machine learning" (Offline AI, artificial intelligence) pro
 >>libjpeg.a  librt.a  libv4l1.a  libv4l2.a  libv4l2rds.a  libv4lconvert.a
 
 * In the container of host, generate libtensorflow-lite.a and executable of demo apps:  
->>```/tensorflow/tensorflow/lite/tools/make/build_rpi_lib.sh ```
+>>```/tensorflow/tensorflow/contrib/lite/tools/make/build_rpi_lib.sh ```
 
 ### Run demo apps at Pi 3 board:
 
