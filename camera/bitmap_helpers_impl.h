@@ -71,7 +71,6 @@ void resize(T* out, uint8_t* in, int image_height, int image_width,
   auto input = interpreter->typed_tensor<float>(0);
   for (int i = 0; i < number_of_pixels; i++) {
     input[i] = in[i];
-    input[i] = input[i] / 255.;
   }
 
   // fill new_sizes
@@ -81,12 +80,12 @@ void resize(T* out, uint8_t* in, int image_height, int image_width,
   interpreter->Invoke();
 
   auto output = interpreter->typed_tensor<float>(2);
-  auto output_number_of_pixels = wanted_height * wanted_width * wanted_channels;
+  auto output_number_of_pixels =
+      wanted_height * wanted_height * wanted_channels;
 
   for (int i = 0; i < output_number_of_pixels; i++) {
     if (s->input_floating)
-  //    out[i] = (output[i] - s->input_mean) / s->input_std;
-      out[i] = output[i];
+      out[i] = (output[i] - s->input_mean) / s->input_std;
     else
       out[i] = (uint8_t)output[i];
   }
